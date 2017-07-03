@@ -1,13 +1,12 @@
 goog.provide('fontface.Ruler');
 
-goog.require('dom');
-
 goog.scope(function () {
+
   /**
    * @constructor
    * @param {string} text
    */
-  fontface.Ruler = function (text) {
+  fontface.Ruler = function (text, dom) {
     var style = 'max-width:none;' +
                 'display:inline-block;' +
                 'position:absolute;' +
@@ -16,28 +15,30 @@ goog.scope(function () {
                 'overflow:scroll;' +
                 'font-size:16px;';
 
-    this.element = dom.createElement('div');
+    this.dom = dom
+
+    this.element = this.dom.createElement('div');
     this.element.setAttribute('aria-hidden', 'true');
 
-    dom.append(this.element, dom.createText(text));
+    this.dom.append(this.element, this.dom.createText(text));
 
-    this.collapsible = dom.createElement('span');
-    this.expandable = dom.createElement('span');
-    this.collapsibleInner = dom.createElement('span');
-    this.expandableInner = dom.createElement('span');
+    this.collapsible = this.dom.createElement('span');
+    this.expandable = this.dom.createElement('span');
+    this.collapsibleInner = this.dom.createElement('span');
+    this.expandableInner = this.dom.createElement('span');
 
     this.lastOffsetWidth = -1;
 
-    dom.style(this.collapsible, style);
-    dom.style(this.expandable, style);
-    dom.style(this.expandableInner, style);
-    dom.style(this.collapsibleInner, 'display:inline-block;width:200%;height:200%;font-size:16px;max-width:none;');
+    this.dom.style(this.collapsible, style);
+    this.dom.style(this.expandable, style);
+    this.dom.style(this.expandableInner, style);
+    this.dom.style(this.collapsibleInner, 'display:inline-block;width:200%;height:200%;font-size:16px;max-width:none;');
 
-    dom.append(this.collapsible, this.collapsibleInner);
-    dom.append(this.expandable, this.expandableInner);
+    this.dom.append(this.collapsible, this.collapsibleInner);
+    this.dom.append(this.expandable, this.expandableInner);
 
-    dom.append(this.element, this.collapsible);
-    dom.append(this.element, this.expandable);
+    this.dom.append(this.element, this.collapsible);
+    this.dom.append(this.element, this.expandable);
   };
 
   var Ruler = fontface.Ruler;
@@ -53,7 +54,7 @@ goog.scope(function () {
    * @param {string} font
    */
   Ruler.prototype.setFont = function (font) {
-    dom.style(this.element, 'max-width:none;' +
+    this.dom.style(this.element, 'max-width:none;' +
                             'min-width:20px;' +
                             'min-height:20px;' +
                             'display:inline-block;' +
@@ -123,8 +124,8 @@ goog.scope(function () {
       that.onScroll(callback);
     }
 
-    dom.addListener(this.collapsible, 'scroll', onScroll);
-    dom.addListener(this.expandable, 'scroll', onScroll);
+    this.dom.addListener(this.collapsible, 'scroll', onScroll);
+    this.dom.addListener(this.expandable, 'scroll', onScroll);
     this.reset();
   };
 });

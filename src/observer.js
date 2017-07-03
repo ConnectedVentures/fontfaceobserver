@@ -1,11 +1,11 @@
 goog.provide('fontface.Observer');
 
 goog.require('fontface.Ruler');
-goog.require('dom');
+goog.require('fontface.Dom');
 
 goog.scope(function () {
   var Ruler = fontface.Ruler;
-
+  var Dom = fontface.Dom;
   /**
    * @constructor
    *
@@ -14,6 +14,9 @@ goog.scope(function () {
    */
   fontface.Observer = function (family, opt_descriptors) {
     var descriptors = opt_descriptors || {};
+
+    this.document = descriptors.document || window.document
+    this.dom = new Dom(this.document)
 
     /**
      * @type {string}
@@ -144,9 +147,9 @@ goog.scope(function () {
    *
    * @return {boolean}
    */
-  Observer.supportStretch = function () {
+  Observer.prototype.supportStretch = function () {
     if (Observer.SUPPORTS_STRETCH === null) {
-      var div = dom.createElement('div');
+      var div = this.dom.createElement('div');
 
       try {
         div.style.font = 'condensed 100px sans-serif';
@@ -164,7 +167,7 @@ goog.scope(function () {
    * @return {string}
    */
   Observer.prototype.getStyle = function (family) {
-    return [this['style'], this['weight'], Observer.supportStretch() ? this['stretch'] : '', '100px', family].join(' ');
+    return [this['style'], this['weight'], this.supportStretch() ? this['stretch'] : '', '100px', family].join(' ');
   };
 
   /**
@@ -197,7 +200,7 @@ goog.scope(function () {
             if (now - start >= timeoutValue) {
               reject();
             } else {
-              document.fonts.load(that.getStyle('"' + that['family'] + '"'), testString).then(function (fonts) {
+              that.document.fonts.load(that.getStyle('"' + that['family'] + '"'), testString).then(function (fonts) {
                 if (fonts.length >= 1) {
                   resolve();
                 } else {
@@ -222,10 +225,10 @@ goog.scope(function () {
           reject(that);
         });
       } else {
-        dom.waitForBody(function () {
-          var rulerA = new Ruler(testString);
-          var rulerB = new Ruler(testString);
-          var rulerC = new Ruler(testString);
+        that.dom.waitForBody(function () {
+          var rulerA = new Ruler(testString, that.dom);
+          var rulerB = new Ruler(testString, that.dom);
+          var rulerC = new Ruler(testString, that.dom);
 
           var widthA = -1;
           var widthB = -1;
@@ -235,14 +238,14 @@ goog.scope(function () {
           var fallbackWidthB = -1;
           var fallbackWidthC = -1;
 
-          var container = dom.createElement('div');
+          var container = that.dom.createElement('div');
 
           /**
            * @private
            */
           function removeContainer() {
             if (container.parentNode !== null) {
-              dom.remove(container.parentNode, container);
+              that.dom.remove(container.parentNode, container);
             }
           }
 
@@ -291,11 +294,11 @@ goog.scope(function () {
           rulerB.setFont(that.getStyle('serif'));
           rulerC.setFont(that.getStyle('monospace'));
 
-          dom.append(container, rulerA.getElement());
-          dom.append(container, rulerB.getElement());
-          dom.append(container, rulerC.getElement());
+          that.dom.append(container, rulerA.getElement());
+          that.dom.append(container, rulerB.getElement());
+          that.dom.append(container, rulerC.getElement());
 
-          dom.append(document.body, container);
+          that.dom.append(that.document.body, container);
 
           fallbackWidthA = rulerA.getWidth();
           fallbackWidthB = rulerB.getWidth();
@@ -308,7 +311,7 @@ goog.scope(function () {
               removeContainer();
               reject(that);
             } else {
-              var hidden = document['hidden'];
+              var hidden = that.document['hidden'];
               if (hidden === true || hidden === undefined) {
                 widthA = rulerA.getWidth();
                 widthB = rulerB.getWidth();
