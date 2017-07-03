@@ -5,7 +5,7 @@ goog.provide('fontface.Descriptors');
  *   style: (string|undefined),
  *   weight: (string|undefined),
  *   stretch: (string|undefined),
- *   dodcument: (Document|undefined)
+ *   document: (Document|undefined)
  * }}
  */
 fontface.Descriptors;
