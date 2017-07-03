@@ -50,9 +50,7 @@
     "unexpected": "^10.14.2"
   },
   "scripts": {
-    "preversion": "npm test",
     "version": "node_modules/grunt-cli/bin/grunt dist && git add fontfaceobserver.js && git add fontfaceobserver.standalone.js",
-    "postversion": "git push && git push --tags && rm -rf build && npm publish",
     "test": "node_modules/grunt-cli/bin/grunt test",
     "build-dist": "node_modules/grunt-cli/bin/grunt dist",
     "build-debug": "node_modules/grunt-cli/bin/grunt debug"
