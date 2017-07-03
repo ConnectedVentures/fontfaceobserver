@@ -1,4 +1,27 @@
-# Font Face Observer [![Build Status](https://travis-ci.org/bramstein/fontfaceobserver.png?branch=master)](https://travis-ci.org/bramstein/fontfaceobserver)
+# Font Face Observer - Fork with Iframe support
+
+This fork supports iframes by taking an optional parameter `document` that determines which document is used to setup fontfaceobserver on.
+This is required if you have dynamically injected iframes and styles, and wish to observe font loading on them.
+
+Here is a quick example
+
+```js
+var customDocument = document.querySelector('iframe').contentWindow.document;
+
+var font = new FontFaceObserver('My Family', {
+  weight: 400,
+  document: customDocument
+});
+
+font.load().then(function () {
+  console.log('Font is available');
+}, function () {
+  console.log('Font is not available');
+});
+```
+
+
+## Description
 
 Font Face Observer is a small `@font-face` loader and monitor (3.5KB minified and 1.3KB gzipped) compatible with any webfont service. It will monitor when a webfont is loaded and notify you. It does not limit you in any way in where, when, or how you load your webfonts. Unlike the [Web Font Loader](https://github.com/typekit/webfontloader) Font Face Observer uses scroll events to detect font loads efficiently and with minimum overhead.
 

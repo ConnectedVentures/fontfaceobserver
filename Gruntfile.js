@@ -14,7 +14,7 @@ module.exports = function (grunt) {
   };
 
   var src = [
-    'node_modules/closure-dom/src/dom.js',
+    'src/dom.js',
     'src/descriptors.js',
     'src/ruler.js',
     'src/observer.js',
