@@ -15,8 +15,8 @@ goog.scope(function () {
   fontface.Observer = function (family, opt_descriptors) {
     var descriptors = opt_descriptors || {};
 
-    this.document = descriptors.document || window.document
-    this.dom = new Dom(this.document)
+    this.document = descriptors.document || window.document;
+    this.dom = new Dom(this.document);
 
     /**
      * @type {string}

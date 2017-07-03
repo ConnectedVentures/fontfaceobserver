@@ -8,10 +8,10 @@ goog.scope(function () {
    * @param {Document} document
    */
   fontface.Dom = function (document) {
-    this.document = document || window.document
-  }
+    this.document = document || window.document;
+  };
 
-  var Dom = fontface.Dom
+  var Dom = fontface.Dom;
 
   /**
    * @private

@@ -15,7 +15,7 @@ goog.scope(function () {
                 'overflow:scroll;' +
                 'font-size:16px;';
 
-    this.dom = dom
+    this.dom = dom;
 
     this.element = this.dom.createElement('div');
     this.element.setAttribute('aria-hidden', 'true');
